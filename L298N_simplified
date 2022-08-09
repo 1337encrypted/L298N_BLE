@@ -13,7 +13,7 @@
 #define spdpin3 6                    //pulse with moudulation ENA_3 and ENB_3 L298N full bridge
 #define spdpin4 9                    //pulse with moudulation ENA_4 and ENB_4 L298N full bridge
 //FourWD car;                        //Create an object of class car
-uint8_t key;                         //Key for the switch case
+int key;                         //Key for the switch case
 int Speed = 255;
   
 void setup()
@@ -146,10 +146,10 @@ void Stp()
     digitalWrite(in6,LOW);
     digitalWrite(in7,LOW);
     digitalWrite(in8,LOW);
-    //analogWrite(spdpin1,0);
-    //analogWrite(spdpin2,0);
-    //analogWrite(spdpin3,0);
-    //analogWrite(spdpin4,0);
+    analogWrite(spdpin1,Speed);
+    analogWrite(spdpin2,Speed);
+    analogWrite(spdpin3,Speed);
+    analogWrite(spdpin4,Speed);
 }
 
 void front()
