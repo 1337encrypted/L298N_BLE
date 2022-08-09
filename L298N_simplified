@@ -13,7 +13,7 @@
 #define spdpin3 6                    //pulse with moudulation ENA_3 and ENB_3 L298N full bridge
 #define spdpin4 9                    //pulse with moudulation ENA_4 and ENB_4 L298N full bridge
 //FourWD car;                        //Create an object of class car
-char key;                         //Key for the switch case
+int key;                         //Key for the switch case
 int Speed = 255;
   
 void setup()
