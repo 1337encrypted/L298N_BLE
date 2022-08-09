@@ -10,9 +10,9 @@ void setup(){
 void loop()
 {
 
-  if (Serial.available() > 0)
+  if (Serial.available())
   {  
-    key=Serial.read();
+    key=Serial.parseInt();
     
     if(key == 'F')
     {
