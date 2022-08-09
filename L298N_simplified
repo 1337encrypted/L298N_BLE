@@ -39,9 +39,8 @@ void loop()
 {
   if (Serial.available() > 0)
   {  
-    Stp();
     key=Serial.read();
-    
+    Stp();
     switch(key)
     {
       case 'F':
