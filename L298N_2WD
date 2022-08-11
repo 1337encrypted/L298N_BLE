@@ -1,10 +1,11 @@
-#define in1 A5                       //in_1 L298N full bridge
-#define in2 A4                       //in_2 L298N full bridge
-#define in3 A3                       //in_3 L298N full bridge
-#define in4 A2                       //in_4 L298N full bridge
-#define spdpin1 3                    //pulse with moudulation ENA_1 and ENB_1 L298N full bridge
-#define spdpin2 5                    //pulse with moudulation ENA_2 and ENB_2 L298N full bridge
-
+#define in1 A5                       //in_1 L298N 
+#define in2 A4                       //in_2 L298N 
+#define in3 A3                       //in_3 L298N 
+#define in4 A2                       //in_4 L298N 
+#define in5 A1                       //Fire extinguisher in_5 L298N
+#define in6 A0                       //Fire extinguisher in_5 L298N
+#define ENA1 3                       //pulse with moudulation ENA_1 and ENB_1 L298N 
+#define ENA2 5                       //pulse with moudulation ENA_2 and ENB_2 L298N  
 char key;                             //Key for the switch case
 int Speed = 255;
   
@@ -15,19 +16,20 @@ void setup()
   pinMode(in2,OUTPUT);
   pinMode(in3,OUTPUT);
   pinMode(in4,OUTPUT);
-  pinMode(spdpin1,OUTPUT);
-  pinMode(spdpin2,OUTPUT);
+  pinMode(ENA1,OUTPUT);
+  pinMode(ENA2,OUTPUT);
+
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
 }
 
 void loop()
 {
-  if (Serial.available() > 0)
+  if (Serial.available())
   {  
     key=Serial.read();
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,LOW);
     switch(key)
     {
       case 'F':
@@ -66,74 +68,111 @@ void loop()
         Serial.println("Right: "+Speed);
         break;
       }
+      case 'W':
+      {
+        digitalWrite(in5,HIGH);
+        digitalWrite(in6,LOW);
+        Serial.println("FireExtinguisher: 255");
+        break;
+      }
+      case 'w':
+      {
+        digitalWrite(in5,LOW);
+        digitalWrite(in6,LOW);
+        Serial.println("FireExtinguisher: 0");
+        break;
+      }
+      case 'U':
+      {
+        digitalWrite(in5,LOW);
+        digitalWrite(in6,HIGH);    
+        Serial.println("FireExtinguisher: 255");
+        break;
+      }
+      case 'u':
+      {
+        digitalWrite(in5,LOW);
+        digitalWrite(in6,LOW);
+        Serial.println("FireExtinguisher: 0");
+        break;
+      }
       case '0':
       {
         Speed = 115;
-        //Serial.println("car.Speed = 115");
+        //Serial.println("Speed = 115");
         break;
       }
       case '1':
       {
         Speed = 130;
-        //Serial.println("car.Speed = 130");
+        //Serial.println("Speed = 130");
         break;
       }
       case '2':
       {
         Speed = 143;
-        //Serial.println("car.Speed = 143");
+        //Serial.println("Speed = 143");
         break;
       }
       case '3':
       {
         Speed = 157;
-        //Serial.println("car.Speed = 157");
+        //Serial.println("Speed = 157");
         break;
       }
       case '4':
       {
         Speed = 170;
-        //Serial.println("car.Speed = 170");
+        //Serial.println("Speed = 170");
         break;
       }
       case '5':
       {
         Speed = 185;
-        //Serial.println("car.Speed = 185");
+        //Serial.println("Speed = 185");
         break;
       }
       case '6':
       {
         Speed = 200;
-        //Serial.println("car.Speed = 200");
+        //Serial.println("Speed = 200");
         break;
       }
       case '7':
       {
         Speed = 213;
-        //Serial.println("car.Speed = 213");
+        //Serial.println("Speed = 213");
         break;
       }
       case '8':
       {
         Speed = 227;
-        //Serial.println("car.Speed = 227");
+        //Serial.println("Speed = 227");
         break;
       }
       case '9':
       {
         Speed = 240;
-        //Serial.println("car.Speed = 240");
+        //Serial.println("Speed = 240");
         break;
       }
       case 'q':
       {
         Speed = 255;
-        //Serial.println("car.Speed = 255");
+        //Serial.println("Speed = 255");
         break;
       }
     }
-  analogWrite(spdpin1,Speed);
-  analogWrite(spdpin2,Speed);
+  analogWrite(ENA1,Speed);
+  analogWrite(ENA2,Speed);
+  }
+  else
+  {
+    digitalWrite(in1,LOW);
+    digitalWrite(in2,LOW);
+    digitalWrite(in3,LOW);
+    digitalWrite(in4,LOW);  
+    analogWrite(ENA1,LOW);
+    analogWrite(ENA2,LOW);
   }
 }
