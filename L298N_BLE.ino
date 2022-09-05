@@ -1,8 +1,8 @@
 #include "L298N_BLE.h"
 
 FourWD car;                                   //Create an object of class car
-int key;                                  //Key for the switch case
-int Speed = 255;  
+uint8_t key;                                  //Key for the switch case
+
 void setup(){
   Serial.begin(9600);
 }

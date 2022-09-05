@@ -7,18 +7,18 @@ class FourWD
 {
   private:
     
-      uint8_t in1;                       //in_1 L298N full bridge
-      uint8_t in2;                       //in_2 L298N full bridge
-      uint8_t in3;                       //in_3 L298N full bridge
-      uint8_t in4;                       //in_4 L298N full bridge
-      uint8_t in5;                       //in_5 L298N full bridge
-      uint8_t in6;                       //in_6 L298N full bridge
-      uint8_t in7;                       //in_7 L298N full bridge
-      uint8_t in8;                       //in_8 L298N full bridge
-      uint8_t spdpin1;                   //pulse with moudulation ENA_1 and ENB_1 L298N full bridge
-      uint8_t spdpin2;                   //pulse with moudulation ENA_2 and ENB_2 L298N full bridge
-      uint8_t spdpin3;                   //pulse with moudulation ENA_3 and ENB_3 L298N full bridge
-      uint8_t spdpin4;                   //pulse with moudulation ENA_4 and ENB_4 L298N full bridge
+      #define in1 A5                       //in_1 L298N full bridge
+      #define in2 A4                       //in_2 L298N full bridge
+      #define in3 A3                       //in_3 L298N full bridge
+      #define in4 A2                       //in_4 L298N full bridge
+      #define in5 A1                       //in_5 L298N full bridge
+      #define in6 A0                       //in_6 L298N full bridge
+      #define in7 2                        //in_7 L298N full bridge
+      #define in8 4                        //in_8 L298N full bridge
+      #define spdpin1 3                    //pulse with moudulation ENA_1 and ENB_1 L298N full bridge
+      #define spdpin2 5                    //pulse with moudulation ENA_2 and ENB_2 L298N full bridge
+      #define spdpin3 6                    //pulse with moudulation ENA_3 and ENB_3 L298N full bridge
+      #define spdpin4 9                    //pulse with moudulation ENA_4 and ENB_4 L298N full bridge
     
   public:
 
@@ -41,20 +41,6 @@ class FourWD
 
 FourWD::FourWD()
 {
-    this->in1 = A5;
-    this->in2 = A4;
-    this->in3 = A3;
-    this->in4 = A2;
-    this->in5 = A1;
-    this->in6 = A0;
-    this->in7 = 2;
-    this->in8 = 4;
-    this->spdpin1 = 3;
-    this->spdpin2 = 5;
-    this->spdpin3 = 6;
-    this->spdpin4 = 9;
-    this->Speed = 255;
-
     pinMode(in1,OUTPUT);
     pinMode(in2,OUTPUT);
     pinMode(in3,OUTPUT);
@@ -67,6 +53,8 @@ FourWD::FourWD()
     pinMode(spdpin2,OUTPUT);
     pinMode(spdpin3,OUTPUT);
     pinMode(spdpin4,OUTPUT);
+
+    this->Speed = 255;
 }
 
 void FourWD::Stp()
@@ -79,10 +67,10 @@ void FourWD::Stp()
     digitalWrite(in6,LOW);
     digitalWrite(in7,LOW);
     digitalWrite(in8,LOW);
-    analogWrite(spdpin1,0);
-    analogWrite(spdpin2,0);
-    analogWrite(spdpin3,0);
-    analogWrite(spdpin4,0);
+//    analogWrite(spdpin1,0);
+//    analogWrite(spdpin2,0);
+//    analogWrite(spdpin3,0);
+//    analogWrite(spdpin4,0);
 }
 
 void FourWD::front()
