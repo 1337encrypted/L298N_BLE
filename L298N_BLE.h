@@ -1,251 +1,168 @@
-#ifndef L298N_BLE_H
-#define L298N_BLE_H
+/*
+ * BTS7960.h - Library for controlling a brushed DC motor using the BTS7960 43amp motor driver.
+ * Created by Yash Herekar, September 9, 2022.
+ * Released into the public domain.
+ * Copyright [2022] [Yash Herekar]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
 
-#include "Arduino.h"
+/*Cannot create a .cpp file as inline prototypes need the function to be present in the same file*/
 
-class FourWD
+#ifndef L298N_H
+#define L298N_H
+
+#if (ARDUINO >= 100)
+    #include "Arduino.h"
+#else
+    #include "WProgram.h"
+#endif
+
+class L298N
 {
   private:
     
-      #define in1 A5                       //in_1 L298N full bridge
-      #define in2 A4                       //in_2 L298N full bridge
-      #define in3 A3                       //in_3 L298N full bridge
-      #define in4 A2                       //in_4 L298N full bridge
-      #define in5 A1                       //in_5 L298N full bridge
-      #define in6 A0                       //in_6 L298N full bridge
-      #define in7 2                        //in_7 L298N full bridge
-      #define in8 4                        //in_8 L298N full bridge
-      #define spdpin1 3                    //pulse with moudulation ENA_1 and ENB_1 L298N full bridge
-      #define spdpin2 5                    //pulse with moudulation ENA_2 and ENB_2 L298N full bridge
-      #define spdpin3 6                    //pulse with moudulation ENA_3 and ENB_3 L298N full bridge
-      #define spdpin4 9                    //pulse with moudulation ENA_4 and ENB_4 L298N full bridge
-    
+  uint8_t in1;                       //in_1 L298N full bridge
+  uint8_t in2;                       //in_2 L298N full bridge
+  uint8_t pwm1;                      //pulse with moudulation ENA L298N full bridge
+      
   public:
 
-      uint8_t Speed;                     //Speed control variable
+  uint8_t pwm;                      //pwm control variable
       
-      inline FourWD() __attribute__((always_inline));
-      inline void Stp() __attribute__((always_inline));
-      inline void front() __attribute__((always_inline));
-      inline void back() __attribute__((always_inline));
-      inline void leftturn() __attribute__((always_inline));
-      inline void rightturn() __attribute__((always_inline));
-      inline void rightShift() __attribute__((always_inline));
-      inline void leftShift() __attribute__((always_inline));
-      inline void leftDiagonalFront() __attribute__((always_inline));
-      inline void rightDiagonalBack() __attribute__((always_inline));
-      inline void leftDiagonalBack() __attribute__((always_inline));
-      inline void rightBackPivot() __attribute__((always_inline));
-      inline void leftBackPivot() __attribute__((always_inline));
+  inline L298N() __attribute__((always_inline));
+  inline L298N(uint8_t,uint8_t,uint8_t) __attribute__((always_inline));
+  inline void begin() __attribute__((always_inline));
+  inline void run() __attribute__((always_inline));
+  inline void stop() __attribute__((always_inline));
+  inline void front() __attribute__((always_inline));
+  inline void back() __attribute__((always_inline));
 };
 
-FourWD::FourWD()
+class dual_L298N: public L298N
 {
-    pinMode(in1,OUTPUT);
-    pinMode(in2,OUTPUT);
-    pinMode(in3,OUTPUT);
-    pinMode(in4,OUTPUT);
-    pinMode(in5,OUTPUT);
-    pinMode(in6,OUTPUT);
-    pinMode(in7,OUTPUT);
-    pinMode(in8,OUTPUT);
-    pinMode(spdpin1,OUTPUT);
-    pinMode(spdpin2,OUTPUT);
-    pinMode(spdpin3,OUTPUT);
-    pinMode(spdpin4,OUTPUT);
+  private:
+    
+  uint8_t in3;                       //in_1 L298N full bridge
+  uint8_t in4;                       //in_2 L298N full bridge
+  uint8_t pwm2;                      //pulse with moudulation ENA L298N full bridge
+      
+  public:
+      
+  inline dual_L298N() __attribute__((always_inline));
+  inline dual_L298N(uint8_t,uint8_t,uint8_t,uint8_t,uint8_t) __attribute__((always_inline));
+  inline dual_L298N(uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t) __attribute__((always_inline));
+  inline void begin() __attribute__((always_inline));
+  inline void run() __attribute__((always_inline));
+  inline void stop() __attribute__((always_inline));
+  inline void front() __attribute__((always_inline));
+  inline void back() __attribute__((always_inline));
+};
 
-    this->Speed = 255;
+/*===============================================================L298N==================================================================*/
+
+L298N::L298N()
+{
+  this->in1 = A5;
+  this->in2 = A4;
+  this->pwm1 = 3;
 }
 
-void FourWD::Stp()
+L298N::L298N(uint8_t in1, uint8_t in2, uint8_t pwm1) 
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,LOW);
-//    analogWrite(spdpin1,0);
-//    analogWrite(spdpin2,0);
-//    analogWrite(spdpin3,0);
-//    analogWrite(spdpin4,0);
+  this->in1 = in1;
+  this->in2 = in2;
+  this->pwm1 = pwm1;
 }
 
-void FourWD::front()
+void L298N::begin()
 {
-    digitalWrite(in1,HIGH);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,HIGH);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,HIGH);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,HIGH);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  pinMode(in1,OUTPUT);
+  pinMode(in2,OUTPUT);
+  pinMode(pwm1,OUTPUT);
+  
+  this->pwm = 255;
 }
 
-void FourWD::back()
+void L298N::stop()
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,HIGH);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,HIGH);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,HIGH);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,HIGH);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  analogWrite(pwm1,0);
 }
 
-void FourWD::leftturn()
+void L298N::front()
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,HIGH);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,HIGH);
-    digitalWrite(in5,HIGH);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,HIGH);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
 }
 
-void FourWD::rightturn()
+void L298N::back()
 {
-    digitalWrite(in1,HIGH);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,HIGH);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,HIGH);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,HIGH);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
 }
 
-void FourWD::rightShift()
+void L298N::run()
 {
-    digitalWrite(in1,HIGH);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,HIGH);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,HIGH);
-    digitalWrite(in7,HIGH);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  analogWrite(pwm1,pwm);
 }
 
-void FourWD::leftShift()
+/*=============================================================dual_L298N==============================================================*/
+
+dual_L298N::dual_L298N()
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,HIGH);
-    digitalWrite(in3,HIGH);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,HIGH);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,HIGH);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
-}
-void FourWD::leftDiagonalFront()
-{
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,HIGH);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,HIGH);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  L298N();
+  this->in3 = A3;
+  this->in4 = A2;
+  this->pwm2 = 5;
 }
 
-void FourWD::rightDiagonalBack()
+dual_L298N::dual_L298N(uint8_t in1, uint8_t in2, uint8_t in3, uint8_t in4, uint8_t pwm1) 
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,HIGH);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,HIGH);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  L298N(in1,in2,pwm1);
+  this->in3 = in3;
+  this->in4 = in4;
 }
 
-void FourWD::leftDiagonalBack()
+dual_L298N::dual_L298N(uint8_t in1, uint8_t in2, uint8_t in3, uint8_t in4, uint8_t pwm1, uint8_t pwm2) 
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,HIGH);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,HIGH);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  L298N(in1,in2,pwm1);
+  this->in3 = in3;
+  this->in4 = in4;
+  this->pwm2 = pwm2;
 }
 
-
-void FourWD::rightBackPivot()
+void dual_L298N::begin()
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,LOW);
-    digitalWrite(in6,HIGH);
-    digitalWrite(in7,HIGH);
-    digitalWrite(in8,LOW);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  L298N::begin();
+  pinMode(in3,OUTPUT);
+  pinMode(in4,OUTPUT);
+  pinMode(pwm2,OUTPUT);
 }
 
-void FourWD::leftBackPivot()
+void dual_L298N::run()
 {
-    digitalWrite(in1,LOW);
-    digitalWrite(in2,LOW);
-    digitalWrite(in3,LOW);
-    digitalWrite(in4,LOW);
-    digitalWrite(in5,HIGH);
-    digitalWrite(in6,LOW);
-    digitalWrite(in7,LOW);
-    digitalWrite(in8,HIGH);
-    analogWrite(spdpin1,Speed);
-    analogWrite(spdpin2,Speed);
-    analogWrite(spdpin3,Speed);
-    analogWrite(spdpin4,Speed);
+  L298N::run();
+  analogWrite(pwm2,pwm);
+}
+
+void dual_L298N::stop()
+{
+  L298N::stop();
+  analogWrite(pwm2,0);
+}
+
+void dual_L298N::front()
+{
+  L298N::front();
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+}
+
+void dual_L298N::back()
+{
+  L298N::back();
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
 }
 #endif
