@@ -1,4 +1,4 @@
-#include "L298N_BLE.h"
+#include <L298N.h>
 #include <BUZZER.h>
 #include <LED.h>
 
@@ -19,27 +19,27 @@
 #endif
 
 //Led definition section
-const uint8_t redLedPin = 12;  //use between 150 ohms to 330 ohms resistor
-const uint8_t blueLedPin = 13;
+constexpr uint8_t redLedPin = 12;  //use between 150 ohms to 330 ohms resistor
+constexpr uint8_t blueLedPin = 13;
 
 //Buzzer definition section
 #define buzzpin 11 //Active buzzer use 100 ohms resistor
 
 //L298N motor driver 1 full bridge pin definitions
-const uint8_t in1 = A5;  
-const uint8_t in2 = A4;
-const uint8_t in3 = A3;       
-const uint8_t in4 = A2;
-const uint8_t pwm1 = 9;    //PWM 980hz
-const uint8_t pwm2 = 5;    //PWM 980hz
+constexpr uint8_t in1 = A5;  
+constexpr uint8_t in2 = A4;
+constexpr uint8_t in3 = A3;       
+constexpr uint8_t in4 = A2;
+constexpr uint8_t pwm1 = 9;    //PWM 980hz
+constexpr uint8_t pwm2 = 5;    //PWM 980hz
 
 //L298N motor driver 2 full bridge pin definitions
-const uint8_t in5 = 2;  
-const uint8_t in6 = 4;
-const uint8_t in7 = 6;       
-const uint8_t in8 = 7;
-const uint8_t pwm3 = 3;    //PWM 980hz
-const uint8_t pwm4 = 10;    //PWM 980hz
+constexpr uint8_t in5 = 2;  
+constexpr uint8_t in6 = 4;
+constexpr uint8_t in7 = 6;       
+constexpr uint8_t in8 = 7;
+constexpr uint8_t pwm3 = 3;    //PWM 980hz
+constexpr uint8_t pwm4 = 10;    //PWM 980hz
 
 /*=====================================================  Object declaration=============================================================*/
 dual_L298N motor1(in1,in2,in3,in4,pwm1,pwm2);                           //Create an object of class motor1
